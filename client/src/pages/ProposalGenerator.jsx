@@ -247,14 +247,11 @@ const ProposalGenerator = () => {
                 </div>
                 <div className="col-span-3">
                   <label className="block text-xs font-semibold text-gray-700 mb-1">Service Type</label>
-                  <select
+                  <input
                     value={row.service}
                     onChange={e => updateServiceRow(row.id, 'service', e.target.value)}
                     className="w-full p-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Armed Guard">Armed Guard</option>
-                    <option value="Unarmed Guard">Unarmed Guard</option>
-                  </select>
+                  />
                 </div>
                 <div className="col-span-2">
                   <label className="block text-xs font-semibold text-gray-700 mb-1">Hourly Rate ($)</label>
@@ -336,61 +333,6 @@ const ProposalGenerator = () => {
           )}
         </button>
       </form>
-      <h2 className="text-lg font-bold mt-8 mb-2">PDF Field Placement</h2>
-      <div className="flex gap-4 mb-4">
-        <label>Select Field:</label>
-        <select value={selectedField} onChange={e => setSelectedField(e.target.value)}>
-          {FIELD_LIST.map(f => (
-            <option key={f.key} value={f.key}>{f.label}</option>
-          ))}
-        </select>
-        <span className="text-sm text-gray-500">Click on the PDF to set the position for the selected field.</span>
-      </div>
-      <div ref={pdfWrapperRef} style={{ position: 'relative', display: 'inline-block', border: '1px solid #ccc' }}>
-        <Document
-          file={pdfFile}
-          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-        >
-          {Array.from(new Array(numPages), (el, idx) => (
-            <div key={idx} style={{ position: 'relative' }}>
-              <Page
-                pageNumber={idx + 1}
-                width={600}
-                onClick={e => handlePdfClick(e, idx + 1)}
-              />
-              {Object.entries(fieldCoords).map(([field, coord]) =>
-                coord.page === idx + 1 ? (
-                  <div
-                    key={field}
-                    style={{
-                      position: 'absolute',
-                      left: coord.x - 8,
-                      top: coord.y - 8,
-                      width: 16,
-                      height: 16,
-                      background: 'red',
-                      borderRadius: '50%',
-                      color: 'white',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: 10,
-                      pointerEvents: 'none',
-                    }}
-                    title={field}
-                  >
-                    {field}
-                  </div>
-                ) : null
-              )}
-            </div>
-          ))}
-        </Document>
-      </div>
-      <div className="mt-4">
-        <h3 className="font-semibold">Field Coordinates:</h3>
-        <pre className="bg-gray-100 p-2 rounded text-xs">{JSON.stringify(fieldCoords, null, 2)}</pre>
-      </div>
     </div>
   );
 };

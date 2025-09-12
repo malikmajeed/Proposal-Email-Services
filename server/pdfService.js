@@ -9,6 +9,20 @@ function formatLongDate(dateStr) {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
+function buildColumnXs(left, right, percents) {
+  // Normalize percents to sum to 100
+  const sum = percents.reduce((a, b) => a + b, 0) || 1;
+  const normalized = percents.map(p => (p / sum) * 100);
+  const width = right - left;
+  const xs = [left];
+  let acc = 0;
+  for (let i = 0; i < normalized.length; i++) {
+    acc += (normalized[i] / 100) * width;
+    xs.push(left + acc);
+  }
+  return xs; // length = percents.length + 1
+}
+
 async function fillProposalTemplateWithFormData(data) {
   const templatePath = path.join(__dirname, 'template', 'Security Service Proposal .pdf');
   const existingPdfBytes = await fs.readFile(templatePath);
@@ -27,27 +41,92 @@ async function fillProposalTemplateWithFormData(data) {
     });
   }
 
-  // Page 3: Services Table
+  // Page 3: Services Rows (no headers), draw continuous table grid (shared borders)
   if (pages[2] && Array.isArray(data.services)) {
-    let y = 230;
-  
-    data.services.forEach((service, idx) => {
-      pages[2].drawText(String(idx + 1), { x: 135, y, size: 12, font, color: rgb(0, 0, 0) });
-      pages[2].drawText(service.service, { x: 180, y, size: 12, font, color: rgb(0, 0, 0) });
-      pages[2].drawText(String(`${'$'+Number(service.hourlyRate).toFixed(2)}`), { x: 335, y, size: 12, font, color: rgb(0, 0, 0) });
-      pages[2].drawText(String(`${service.hours}`), { x: 390, y, size: 12, font, color: rgb(0, 0, 0) });
-      pages[2].drawText(String(service.guards), { x: 460, y, size: 12, font, color: rgb(0, 0, 0) });
-      pages[2].drawText(String(`${'$'+Number(service.totalCost).toFixed(2)}`), { x: 510, y, size: 12, font, color: rgb(0, 0, 0) });
-  
-      y -= 20; // move down for the next row
-    });
-    pages[2].drawText(`Note: ${data.note || ''}`, {
-      x: 130, y: y-30, size: 12, font, color: rgb(0, 0, 0)
+    const page = pages[2];
+
+    // Table bounds (keep consistent with your template): previously 120..560
+    const tableLeft = 120;
+    const tableRight = 560;
+
+    // Column widths in percentages (Sr, Service, Hourly, Hours, Guards, Total)
+    // Will be normalized to 100% automatically if they don't sum to 100
+    const columnPercents = [10, 40, 20, 20, 20, 30];
+
+    // Compute column X boundaries
+    const colXs = buildColumnXs(tableLeft, tableRight, columnPercents);
+
+    const startY = 230; // first row text baseline
+    const rowStep = 20; // vertical step per row
+
+    // Visual row box relative to text baseline so text sits comfortably inside
+    const rowHeight = 18; // box height
+    const textBaselineYOffset = 4; // distance from box top to text baseline
+    const borderColor = rgb(61/255, 60/255, 60/255);
+    const borderWidth = 1; // 1pt lines
+
+    // Helper: compute a left padding inside each column for text
+    const padLeft = 10;
+
+    // 1) Draw row texts using dynamic columns
+    for (let i = 0; i < data.services.length; i++) {
+      const service = data.services[i];
+      const y = startY - i * rowStep;
+
+      // Sr. No. column
+      page.drawText(String(i + 1), { x: colXs[0] + padLeft, y, size: 12, font, color: rgb(0, 0, 0) });
+      // Service
+      page.drawText(service.service || '', { x: colXs[1] + padLeft, y, size: 12, font, color: rgb(0, 0, 0) });
+      // Hourly rate
+      page.drawText(`$${Number(service.hourlyRate || 0).toFixed(2)}`, { x: colXs[2] + padLeft, y, size: 12, font, color: rgb(0, 0, 0) });
+      // Hours
+      page.drawText(String(service.hours || 0), { x: colXs[3] + padLeft, y, size: 12, font, color: rgb(0, 0, 0) });
+      // Guards
+      page.drawText(String(service.guards || 0), { x: colXs[4] + padLeft, y, size: 12, font, color: rgb(0, 0, 0) });
+      // Total
+      page.drawText(`$${Number(service.totalCost || 0).toFixed(2)}`, { x: colXs[5] + padLeft, y, size: 12, font, color: rgb(0, 0, 0) });
     }
-  );
+
+    // 2) Draw the grid over all rows at once so borders are shared
+    const rowCount = data.services.length;
+    if (rowCount > 0) {
+      const topY = startY + (rowHeight - textBaselineYOffset); // top of first row box
+      const bottomY = (startY - (rowCount - 1) * rowStep) + (rowHeight - textBaselineYOffset) - rowHeight; // bottom of last row box
+      const tableWidth = tableRight - tableLeft;
+
+      // Horizontal lines (row boundaries)
+      for (let i = 0; i <= rowCount; i++) {
+        const yLine = topY - i * rowStep;
+        page.drawRectangle({
+          x: tableLeft,
+          y: yLine - borderWidth / 2,
+          width: tableWidth,
+          height: borderWidth,
+          color: borderColor,
+        });
+      }
+
+      // Vertical lines (column boundaries)
+      for (let c = 0; c < colXs.length; c++) {
+        const xLine = colXs[c];
+        page.drawRectangle({
+          x: xLine - borderWidth / 2,
+          y: bottomY,
+          width: borderWidth,
+          height: topY - bottomY,
+          color: borderColor,
+        });
+      }
+    }
+
+    // Optional: note below the last row
+    if (data.note) {
+      const noteY = (startY - rowCount * rowStep) - 10;
+      page.drawText(`Note: ${data.note}`, { x: tableLeft + 10, y: noteY, size: 12, font, color: rgb(0, 0, 0) });
+    }
   }
   
-  // Page 4: Payment Terms, Termination, Note
+  // Page 4: Payment Terms, Termination
   if (pages[3]) {
     pages[3].drawText(` ${data.paymentTerms || ''}`, {
       x: 508, y: 660,   size: 13, font, color: rgb(0, 0, 0)
@@ -55,7 +134,6 @@ async function fillProposalTemplateWithFormData(data) {
     pages[3].drawText(`${data.termination || ''}`, {
       x: 364, y: 444, size: 13, font, color: rgb(0, 0, 0)
     });
-   
   }
 
   // Page 5: Agreement page
