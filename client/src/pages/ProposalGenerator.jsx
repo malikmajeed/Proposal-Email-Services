@@ -14,6 +14,7 @@ const FIELD_LIST = [
   { key: 'paymentTerms', label: 'Payment Terms' },
   { key: 'termination', label: 'Termination' },
   { key: 'note', label: 'Note' },
+  { key: 'serviceStartDate', label: 'Services Start Date' },
 ];
 
 const ProposalGenerator = () => {
@@ -27,10 +28,11 @@ const ProposalGenerator = () => {
     company: '',
     termination: '',
     paymentTerms: '',
+    serviceStartDate: '',
     note: '',
   });
   const [serviceRows, setServiceRows] = useState([
-    { id: 1, service: 'Armed Guard', hourlyRate: 0, hours: 1, guards: 1, totalCost: 0 }
+    { id: 1, service: 'Armed Guard', hourlyRate: 0.0, hours: 1, guards: 1, totalCost: 0.0 }
   ]);
   const [pdfFile, setPdfFile] = useState('/server/template/Security Service Proposal .pdf');
   const [selectedField, setSelectedField] = useState(FIELD_LIST[0].key);
@@ -42,10 +44,11 @@ const ProposalGenerator = () => {
     setServiceRows(rows => rows.map(row => {
       if (row.id === id) {
         const updated = { ...row, [field]: value };
-        const rate = Number(updated.hourlyRate) || 0;
-        const hrs = Number(updated.hours) || 0;
-        const numGuards = Number(updated.guards) || 0;
-        updated.totalCost = rate * hrs * numGuards;
+        const rate = parseFloat(updated.hourlyRate) || 0.0;
+        const hrs = parseFloat(updated.hours) || 0.0;
+        const numGuards = parseInt(updated.guards) || 0;
+        updated.hourlyRate = rate;
+        updated.totalCost = parseFloat((rate * hrs * numGuards).toFixed(2));
         return updated;
       }
       return row;
@@ -57,10 +60,10 @@ const ProposalGenerator = () => {
     setServiceRows([...serviceRows, {
       id: newId,
       service: 'Unarmed Guard',
-      hourlyRate: 0,
+      hourlyRate: 0.0,
       hours: 1,
       guards: 1,
-      totalCost: 0
+      totalCost: 0.0
     }]);
   };
 
@@ -210,6 +213,17 @@ const ProposalGenerator = () => {
             />
           </div>
         </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Services Start Date</label>
+            <input
+              type="date"
+              value={formData.serviceStartDate}
+              onChange={e => setFormData({ ...formData, serviceStartDate: e.target.value })}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+        </div>
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-800">Services</h3>
@@ -247,7 +261,7 @@ const ProposalGenerator = () => {
                   <input
                     type="number"
                     value={row.hourlyRate}
-                    onChange={e => updateServiceRow(row.id, 'hourlyRate', parseFloat(e.target.value) || 0)}
+                    onChange={e => updateServiceRow(row.id, 'hourlyRate', parseFloat(e.target.value) || 0.0)}
                     className="w-full p-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
                     min="0"
                     step="0.01"
@@ -258,7 +272,7 @@ const ProposalGenerator = () => {
                   <input
                     type="number"
                     value={row.hours}
-                    onChange={e => updateServiceRow(row.id, 'hours', parseFloat(e.target.value) || 0)}
+                    onChange={e => updateServiceRow(row.id, 'hours', parseFloat(e.target.value) || 0.0)}
                     className="w-full p-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
                     min="0"
                     step="0.1"
@@ -277,7 +291,7 @@ const ProposalGenerator = () => {
                 <div className="col-span-2">
                   <label className="block text-xs font-semibold text-gray-700 mb-1">Total Cost</label>
                   <div className="p-2 bg-white border border-gray-300 rounded text-sm font-semibold text-green-600">
-                    ${row.totalCost.toFixed(2)}
+                    ${Number(row.totalCost).toFixed(2)}
                   </div>
                 </div>
                 <div className="col-span-1">

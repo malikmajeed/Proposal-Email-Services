@@ -13,10 +13,10 @@ async function fillProposalTemplateWithFormData(data) {
   // Page 1: Name & Company
   if (pages[0]) {
     pages[0].drawText(`${data.title || ''} ${data.name || ''}`, {
-      x: 40.147, y: 159.264, size: 16, font: boldFont,color: rgb(1, 1, 1)
+      x: 40.147, y: 162, size: 16, font: boldFont,color: rgb(1, 1, 1)
     });
     pages[0].drawText(`${data.address || ''}`, {
-      x: 40.145, y: 129.589, size: 16, font, color: rgb(1, 1, 1)
+      x: 40.145, y: 132, size: 13, font, color: rgb(1, 1, 1)
     });
     // pages[0].drawText(`${data.address || ''}`, {
     //   x: 100, y: 660, size: 12, font, color: rgb(0, 0, 0)
@@ -29,19 +29,6 @@ async function fillProposalTemplateWithFormData(data) {
     // });
   }
 
-  // Page 4: Payment Terms, Termination, Note
-  if (pages[3]) {
-    pages[3].drawText(` ${data.paymentTerms || ''}`, {
-      x: 508, y: 655,   size: 14, font, color: rgb(0, 0, 0)
-    });
-    pages[3].drawText(`${data.termination || ''}`, {
-      x: 358, y: 435, size: 14, font, color: rgb(0, 0, 0)
-    });
-    pages[1].drawText(`Note: ${data.note || ''}`, {
-      x: 100, y: 660, size: 12, font, color: rgb(0, 0, 0)
-    }
-  );
-  }
 
   // Page 3: Services Table
   // if (pages[2] && Array.isArray(data.services)) {
@@ -67,26 +54,42 @@ async function fillProposalTemplateWithFormData(data) {
   
       y -= 20; // move down for the next row
     });
+    pages[2].drawText(`Note: ${data.note || ''}`, {
+      x: 130, y: y-30, size: 12, font, color: rgb(0, 0, 0)
+    }
+  );
   }
   
+
+
+  // Page 4: Payment Terms, Termination, Note
+  if (pages[3]) {
+    pages[3].drawText(` ${data.paymentTerms || ''}`, {
+      x: 508, y: 660,   size: 13, font, color: rgb(0, 0, 0)
+    });
+    pages[3].drawText(`${data.termination || ''}`, {
+      x: 364, y: 444, size: 13, font, color: rgb(0, 0, 0)
+    });
+   
+  }
 
 
   // Page 5: Agreement page
   if (pages[5]) {
     pages[5].drawText(`${data.title || ''} ${data.name || ''}`, {
-      x: 117.5, y: 488, size: 14, font, color: rgb(0, 0, 0)
+      x: 117.5, y: 488, size: 13, font, color: rgb(0, 0, 0)
     });
     pages[5].drawText(`${data.company || ''}`, {
-      x: 361.5, y: 488, size: 14, font, color: rgb(0, 0, 0)
+      x: 361.5, y: 488, size: 13, font, color: rgb(0, 0, 0)
     });
     pages[5].drawText(`${data.email || ''}`, {
-      x: 117.5, y: 454, size: 14, font, color: rgb(0, 0, 0)
+      x: 117.5, y: 454, size: 13, font, color: rgb(0, 0, 0)
     });
     pages[5].drawText(` ${data.contact || ''}`, {
-      x: 361.5, y: 454, size: 14, font, color: rgb(0, 0, 0)
+      x: 361.5, y: 454, size: 13, font, color: rgb(0, 0, 0)
     });
-    pages[5].drawText(`${data.company || ''}`, {
-      x: 425, y: 385, size: 14, font, color: rgb(0, 0, 0)
+    pages[5].drawText(`${data.serviceStartDate || ''}`, {
+      x: 427, y: 383, size: 13, font, color: rgb(0, 0, 0)
     });
   }
 
