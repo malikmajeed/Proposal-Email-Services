@@ -2,10 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
-const { PDFDocument, rgb, StandardFonts } = require('pdf-lib');
 const fs = require('fs').promises;
-const path = require('path');
-const proposalRoutes = require('./proposalRoutes');
+const proposalRoutes = require('./routes/proposalRoutes');
 
 const app = express();
 const PORT = 3001;
