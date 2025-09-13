@@ -21,9 +21,11 @@ class ProposalController {
       const proposalData = proposal.calculateTotals().toJSON();
       const pdfBytes = await this.pdfService.fillProposalTemplate(proposalData);
       
+
+      const fileName = `${proposalData.name}, Proposal - BlueWolf Int'l Security.pdf`;
       res.set({
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="proposal.pdf"',
+        'Content-Disposition': `attachment; filename=${fileName}`,
         'Content-Length': pdfBytes.length,
       });
       
