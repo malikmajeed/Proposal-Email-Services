@@ -1,26 +1,39 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
-import ProposalGenerator from './pages/ProposalGenerator';
-import InvoiceEmails from './pages/InvoiceEmails';
-import ProposalEmails from './pages/ProposalEmails';
+import React, { useState } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import HomePage from './components/HomePage';
+import ProposalForm from './components/forms/ProposalForm';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
+  const [currentView, setCurrentView] = useState('home');
+
+  const renderView = () => {
+    switch (currentView) {
+      case 'create-proposal':
+        return <ProposalForm onBack={() => setCurrentView('home')} />;
+      case 'send-proposal':
+        return <div className="p-8 text-center">Send Proposal - Coming Soon</div>;
+      case 'send-invoice':
+        return <div className="p-8 text-center">Send Invoice - Coming Soon</div>;
+      default:
+        return <HomePage onNavigate={setCurrentView} />;
+    }
+  };
+
   return (
-    <Router>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <Navbar />
-        <main className="container mx-auto px-4 py-8">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/proposal-generator" element={<ProposalGenerator />} />
-            <Route path="/invoice-emails" element={<InvoiceEmails />} />
-            <Route path="/proposal-emails" element={<ProposalEmails />} />
-          </Routes>
-        </main>
+    <QueryClientProvider client={queryClient}>
+      <div className="min-h-screen bg-gray-50">
+        {renderView()}
       </div>
-    </Router>
+    </QueryClientProvider>
   );
 }
 
