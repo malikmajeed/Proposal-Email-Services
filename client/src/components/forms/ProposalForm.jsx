@@ -16,7 +16,7 @@ const ProposalForm = ({ onBack }) => {
   });
 
   const [serviceRows, setServiceRows] = useState([
-    { id: 1, service: 'Unarmed Guard', hourlyRate: 0, hours: 1, guards: 1, totalCost: 0 }
+    { id: 1, service: 'Unarmed Guard', hourlyRate: 1, hours: 1, guards: 1, totalCost: 0 }
   ]);
 
   const generateProposal = useGenerateProposal();
