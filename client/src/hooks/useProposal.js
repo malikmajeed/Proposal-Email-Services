@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 const generateProposal = async (proposalData) => {
-  const response = await fetch('http://localhost:3001/api/generate-proposal', {
+  const response = await fetch('http://10.255.143.89:3001/api/generate-proposal', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
