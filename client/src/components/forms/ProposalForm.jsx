@@ -155,7 +155,7 @@ const ProposalForm = ({ onBack }) => {
           </div>
 
           {/* Services */}
-          <div className="bg-white rounded-xl p-1 shadow-sm">
+          <div className="bg-white rounded-xl p-3 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800">Services</h2>
               <button
@@ -168,76 +168,85 @@ const ProposalForm = ({ onBack }) => {
               </button>
             </div>
             
-            {/* Table Headers */}
-            <div className="grid grid-cols-12 gap-1 mb-2 p-2 bg-gray-100 rounded-lg font-medium text-xs text-gray-700">
-              <div className="col-span-1 text-center">#</div>
-              <div className="col-span-3 text-left">Service(s)</div>
-              <div className="col-span-2 text-center">Rate</div>
-              <div className="col-span-2 text-center">Hours</div>
-              <div className="col-span-2 text-center">Guards</div>
-              <div className="col-span-2 text-center">Cost</div>
-            </div>
+          
             
             <div className="space-y-2">
               {serviceRows.map((row, index) => (
-                <div key={row.id} className="grid grid-cols-12 gap-1 p-2 bg-gray-50 rounded-lg">
-                  <div className="col-span-1 flex items-center justify-center">
-                    <span className="text-xs font-medium text-gray-600">{index + 1}</span>
+                <div key={row.id} className="space-y-2">
+                  {/* First Row: Sr. No, Services, Cost */}
+                  <div className="grid grid-cols-12 gap-1 p-2 rounded-lg">
+                    <div className="col-span-2 flex flex-col items-start justify-between">
+                      <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-1">Sr.</label>
+                      <p className="text-sm font-medium text-gray-600">{index + 1}</p>
+                    </div>
+                    <div className="col-span-7">
+                      <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">Service(s)</label>
+                      <input
+                        type="text"
+                        value={row.service}
+                        onChange={e => updateServiceRow(row.id, 'service', e.target.value)}
+                        className="w-full p-1 border border-gray-300 rounded text-sm"
+                        placeholder="Service type"
+                      />
+                    </div>
+                    <div className="col-span-3 flex flex-col items-end justify-between">
+                      <label htmlFor="totalCost" className="block text-sm font-medium text-gray-700 mb-1">Cost</label>
+                      <div className="flex items-center justify-end w-full">
+                        <span className="text-sm font-medium text-green-600">
+                          ${row.totalCost.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="col-span-3">
-                    <input
-                      type="text"
-                      value={row.service}
-                      onChange={e => updateServiceRow(row.id, 'service', e.target.value)}
-                      className="w-full p-1 border border-gray-300 rounded text-xs"
-                      placeholder="Service type"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      value={row.hourlyRate}
-                      onChange={e => updateServiceRow(row.id, 'hourlyRate', parseFloat(e.target.value) || 0)}
-                      className="w-full p-1 border border-gray-300 rounded text-xs"
-                      placeholder="Rate"
-                      min="0"
-                      step="0.01"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      value={row.hours}
-                      onChange={e => updateServiceRow(row.id, 'hours', parseFloat(e.target.value) || 0)}
-                      className="w-full p-1 border border-gray-300 rounded text-xs"
-                      placeholder="Hours"
-                      min="0"
-                      step="0.1"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <input
-                      type="number"
-                      value={row.guards}
-                      onChange={e => updateServiceRow(row.id, 'guards', parseInt(e.target.value) || 0)}
-                      className="w-full p-1 border border-gray-300 rounded text-xs"
-                      placeholder="Guards"
-                      min="1"
-                    />
-                  </div>
-                  <div className="col-span-2 flex items-center justify-between">
-                    <span className="text-xs font-medium text-green-600">
-                      ${row.totalCost.toFixed(2)}
-                    </span>
-                    {serviceRows.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeServiceRow(row.id)}
-                        className="p-1 text-red-500 hover:bg-red-50 rounded"
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </button>
-                    )}
+                  
+                  {/* Second Row: Rate, Hours, Guards, Delete Button */}
+                  <div className="grid grid-cols-12 gap-1 p-2 rounded-lg">
+                    <div className="col-span-3">
+                      <label htmlFor="hourlyRate" className="block text-sm font-medium text-gray-700 mb-1">Rate</label>
+                      <input
+                        type="number"
+                        value={row.hourlyRate}
+                        onChange={e => updateServiceRow(row.id, 'hourlyRate', parseFloat(e.target.value) || 0)}
+                        className="w-full p-1 border border-gray-300 rounded text-sm"
+                        placeholder="Rate"
+                        min="0"
+                        step="0.01"
+                      />
+                    </div>
+                    <div className="col-span-3">
+                      <label htmlFor="hours" className="block text-sm font-medium text-gray-700 mb-1">Hours</label>
+                      <input
+                        type="number"
+                        value={row.hours}
+                        onChange={e => updateServiceRow(row.id, 'hours', parseFloat(e.target.value) || 0)}
+                        className="w-full p-1 border border-gray-300 rounded text-sm"
+                        placeholder="Hours"
+                        min="0"
+                        step="0.1"
+                      />
+                    </div>
+                    <div className="col-span-3">
+                      <label htmlFor="guards" className="block text-sm font-medium text-gray-700 mb-1">Guards</label>
+                      <input
+                        type="number"
+                        value={row.guards}
+                        onChange={e => updateServiceRow(row.id, 'guards', parseInt(e.target.value) || 0)}
+                        className="w-full p-1 border border-gray-300 rounded text-sm"
+                        placeholder="Guards"
+                        min="1"
+                      />
+                    </div>
+                    <div className="col-span-3 flex flex-col items-center justify-center">
+                      {serviceRows.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeServiceRow(row.id)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg border border-red-200 hover:border-red-300 transition-colors"
+                        >
+                          <Trash2 className="h-5 w-5" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

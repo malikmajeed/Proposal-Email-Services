@@ -135,14 +135,58 @@ class PDFService {
         }
       }
 
-      // Note
+      // Note with text wrapping
       if (data.note) {
         const noteY = (startY - rowCount * rowStep) - 10;
+        const maxWidth = 555 - tableLeft; // Maximum width for text
+        const lineHeight = 14; // Height between lines
+        const fontSize = 12;
+        
         // Draw "Note:" in bold
-        page.drawText('Note:', { x: tableLeft, y: noteY, size: 12, font: boldFont, color: rgb(0, 0, 0) });
-        // Draw the rest of the note in regular font, right after "Note:"
-        const noteLabelWidth = boldFont.widthOfTextAtSize('Note: ', 12);
-        page.drawText(` ${data.note}`, { x: tableLeft + noteLabelWidth, y: noteY, size: 12, font, color: rgb(0, 0, 0) });
+        page.drawText('Note:', { x: tableLeft, y: noteY, size: fontSize, font: boldFont, color: rgb(0, 0, 0) });
+        
+        // Calculate width of "Note: " to position the text
+        const noteLabelWidth = boldFont.widthOfTextAtSize('Note: ', fontSize);
+        const textStartX = tableLeft + noteLabelWidth;
+        const availableWidth = maxWidth - noteLabelWidth;
+        
+        // Split text into lines
+        const words = data.note.split(' ');
+        const lines = [];
+        let currentLine = '';
+        
+        for (const word of words) {
+          const testLine = currentLine ? `${currentLine} ${word}` : word;
+          const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+          
+          if (testWidth <= availableWidth) {
+            currentLine = testLine;
+          } else {
+            if (currentLine) {
+              lines.push(currentLine);
+              currentLine = word;
+            } else {
+              // Single word is too long, add it anyway
+              lines.push(word);
+            }
+          }
+        }
+        
+        if (currentLine) {
+          lines.push(currentLine);
+        }
+        
+        // Draw each line
+        lines.forEach((line, index) => {
+          const y = noteY - (index * lineHeight);
+          page.drawText(line, { 
+            x: textStartX, 
+            y: y, 
+            size: fontSize, 
+            font, 
+            color: rgb(0, 0, 0) 
+          });
+        });
       }
     }
 
