@@ -1,7 +1,7 @@
 import React from 'react';
-import { FileText, Send, Receipt } from 'lucide-react';
+import { FileText, Send, Receipt, LogOut } from 'lucide-react';
 
-const HomePage = ({ onNavigate }) => {
+const HomePage = ({ onNavigate, onLogout }) => {
 
   const actions = [
     {
@@ -47,6 +47,13 @@ const HomePage = ({ onNavigate }) => {
           <p className="text-gray-600 text-sm">
             proposals & Invoices managment
           </p>
+          <button
+            onClick={onLogout}
+            className="mt-4 flex items-center justify-center mx-auto px-4 py-2 text-sm text-gray-600 hover:text-red-600 transition-colors"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Logout
+          </button>
         </div>
 
         {/* Action Buttons */}
@@ -80,7 +87,7 @@ const HomePage = ({ onNavigate }) => {
         {/* Footer */}
         <div className="mt-12 text-center">
           <p className="text-xs text-gray-500">
-            Optimized for mobile use
+            For Private Use Only
           </p>
         </div>
       </div>

@@ -1,10 +1,11 @@
 const express = require('express');
 const ProposalController = require('../controllers/ProposalController');
+const { requireAuth } = require('../middleware/auth');
 
 const router = express.Router();
 const proposalController = new ProposalController();
 
-router.post('/api/generate-proposal', (req, res) => 
+router.post('/api/generate-proposal', requireAuth, (req, res) => 
   proposalController.generateProposal(req, res)
 );
 
