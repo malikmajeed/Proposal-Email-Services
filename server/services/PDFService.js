@@ -53,7 +53,7 @@ class PDFService {
         x: 40.147, y: 164, size: 16, font: boldFont, color: rgb(1, 1, 1)
       });
       pages[0].drawText(`${data.address || ''}`, {
-        x: 40.145, y: 134, size: 13, font, color: rgb(1, 1, 1)
+        x: 40.145, y: 134, size: 13, font, color: rgb(192/255, 192/255, 192/255)
       });
     }
 
@@ -138,10 +138,14 @@ class PDFService {
       // Note
       if (data.note) {
         const noteY = (startY - rowCount * rowStep) - 10;
-        page.drawText(`Note: ${data.note}`, { x: tableLeft + 10, y: noteY, size: 12, font, color: rgb(0, 0, 0) });
+        // Draw "Note:" in bold
+        page.drawText('Note:', { x: tableLeft, y: noteY, size: 12, font: boldFont, color: rgb(0, 0, 0) });
+        // Draw the rest of the note in regular font, right after "Note:"
+        const noteLabelWidth = boldFont.widthOfTextAtSize('Note: ', 12);
+        page.drawText(` ${data.note}`, { x: tableLeft + noteLabelWidth, y: noteY, size: 12, font, color: rgb(0, 0, 0) });
       }
     }
-    
+
     // Page 4: Payment Terms, Termination
     if (pages[3]) {
       pages[3].drawText(` ${data.paymentTerms || ''}`, { x: 508, y: 660, size: 13, font, color: rgb(0, 0, 0) });
