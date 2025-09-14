@@ -172,8 +172,8 @@ const ProposalForm = ({ onBack }) => {
             
             <div className="space-y-2">
               {serviceRows.map((row, index) => (
-                <div key={row.id} className="space-y-2">
-                  {/* First Row: Sr. No, Services, Cost */}
+                <div key={row.id} className="space-y-2 border-b border-gray-400 pb-2">
+                  {/* First Row: Sr. No, Services, Rate */}
                   <div className="grid grid-cols-12 gap-1 p-2 rounded-lg">
                     <div className="col-span-2 flex flex-col items-start justify-between">
                       <label htmlFor="" className="block text-sm font-medium text-gray-700 mb-1">Sr.</label>
@@ -189,20 +189,8 @@ const ProposalForm = ({ onBack }) => {
                         placeholder="Service type"
                       />
                     </div>
-                    <div className="col-span-3 flex flex-col items-end justify-between">
-                      <label htmlFor="totalCost" className="block text-sm font-medium text-gray-700 mb-1">Cost</label>
-                      <div className="flex items-center justify-end w-full">
-                        <span className="text-sm font-medium text-green-600">
-                          ${row.totalCost.toFixed(2)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Second Row: Rate, Hours, Guards, Delete Button */}
-                  <div className="grid grid-cols-12 gap-1 p-2 rounded-lg">
                     <div className="col-span-3">
-                      <label htmlFor="hourlyRate" className="block text-sm font-medium text-gray-700 mb-1">Rate</label>
+                      <label htmlFor="hourlyRate" className="block text-sm font-medium text-gray-700 mb-1">Rate/hr</label>
                       <input
                         type="number"
                         value={row.hourlyRate}
@@ -213,6 +201,10 @@ const ProposalForm = ({ onBack }) => {
                         step="0.01"
                       />
                     </div>
+                  </div>
+                  
+                  {/* Second Row: Hours, Guards, Cost, Delete Button */}
+                  <div className="grid grid-cols-12 gap-3 p-2 rounded-lg">
                     <div className="col-span-3">
                       <label htmlFor="hours" className="block text-sm font-medium text-gray-700 mb-1">Hours</label>
                       <input
@@ -236,12 +228,21 @@ const ProposalForm = ({ onBack }) => {
                         min="1"
                       />
                     </div>
-                    <div className="col-span-3 flex flex-col items-center justify-center">
+                    <div className="col-span-4">
+                      <label htmlFor="totalCost" className="block text-sm font-medium text-gray-700   mb-1">Cost</label>
+                      <input
+                        type="text"
+                        value={`$${row.totalCost.toFixed(2)}`}
+                        readOnly
+                        className="w-full p-1 border border-gray-300 rounded text-sm text-green-600 font-medium bg-gray-50 text-right"
+                      />
+                    </div>
+                    <div className="col-span-2 flex flex-col items-end justify-end">
                       {serviceRows.length > 1 && (
                         <button
                           type="button"
                           onClick={() => removeServiceRow(row.id)}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg border border-red-200 hover:border-red-300 transition-colors"
+                          className="p-1 text-red-500 hover:bg-red-50 rounded-lg border border-red-200 hover:border-red-300 transition-colors"
                         >
                           <Trash2 className="h-5 w-5" />
                         </button>

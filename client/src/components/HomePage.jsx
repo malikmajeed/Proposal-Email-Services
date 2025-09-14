@@ -1,7 +1,7 @@
 import React from 'react';
-import { FileText, Send, Receipt } from 'lucide-react';
+import { FileText, Send, Receipt, LogOut } from 'lucide-react';
 
-const HomePage = ({ onNavigate }) => {
+const HomePage = ({ onNavigate, onLogout }) => {
 
   const actions = [
     {
@@ -38,15 +38,20 @@ const HomePage = ({ onNavigate }) => {
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-8 pt-8">
-          <div className="flex items-center justify-center mb-4">
-            <img src="/BlueWolf Logo.png" alt='BlueWolf Logo' className="h-[200px] w-[200px] text-blue-600" />
-          </div>
-          <h1 className="text-2xl font-bold font-times text-gray-800 mb-2">
+
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
             BlueWolf Int'l Security
           </h1>
           <p className="text-gray-600 text-sm">
             proposals & Invoices managment
           </p>
+          <button
+            onClick={onLogout}
+            className="mt-4 flex items-center justify-center mx-auto px-4 py-2 text-sm text-gray-600 hover:text-red-600 transition-colors border border-red-300 rounded-lg"
+          >
+            <LogOut className="h-4 w-4 mr-2 " />
+            Logout
+          </button>
         </div>
 
         {/* Action Buttons */}
@@ -57,7 +62,7 @@ const HomePage = ({ onNavigate }) => {
               <button
                 key={action.id}
                 onClick={() => onNavigate(action.id)}
-                className={`w-full ${action.bgColor} rounded-2xl border border-gray-200 p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-white/50 active:scale-95`}
+                className={`w-full ${action.bgColor} rounded-2xl border border-blue-200 p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border border-white/50 active:scale-95`}
               >
                 <div className="flex items-center space-x-4">
                   <div className={`w-12 h-12 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-center`}>
@@ -80,7 +85,7 @@ const HomePage = ({ onNavigate }) => {
         {/* Footer */}
         <div className="mt-12 text-center">
           <p className="text-xs text-gray-500">
-            Optimized for mobile use
+            For Private Use Only
           </p>
         </div>
       </div>

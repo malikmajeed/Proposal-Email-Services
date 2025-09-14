@@ -4,6 +4,7 @@ const multer = require('multer');
 const nodemailer = require('nodemailer');
 const fs = require('fs').promises;
 const proposalRoutes = require('./routes/proposalRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 const PORT = 3001;
@@ -33,7 +34,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Use proposal routes
+// Use routes
+app.use(authRoutes);
 app.use(proposalRoutes);
 
 // Routes
