@@ -1,41 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-
-const generateProposal = async (proposalData) => {
-  const token = localStorage.getItem('bluewolf_token');
-  const response = await fetch('http://10.255.143.89:3001/api/generate-proposal', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    },
-    body: JSON.stringify(proposalData),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || 'Failed to generate proposal');
-  }
-
-  return response.blob();
-};
+import { proposalAPI } from '../utils/api';
 
 export const useGenerateProposal = () => {
   return useMutation({
     mutationFn: async (proposalData) => {
-      const token = localStorage.getItem('bluewolf_token');
-      const response = await fetch('http://10.255.143.89:3001/api/generate-proposal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(proposalData),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to generate proposal');
-      }
+      const response = await proposalAPI.generate(proposalData);
 
       // Get filename from Content-Disposition header
       const contentDisposition = response.headers.get('Content-Disposition');

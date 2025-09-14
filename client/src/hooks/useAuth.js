@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const API_BASE_URL = 'http://10.255.143.89:3001';
+import { authAPI } from '../utils/api';
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,21 +20,9 @@ const useAuth = () => {
 
   const verifyToken = async (tokenToVerify) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
-        headers: {
-          'Authorization': `Bearer ${tokenToVerify}`
-        }
-      });
-      
-      if (response.ok) {
-        setIsAuthenticated(true);
-        setToken(tokenToVerify);
-      } else {
-        // Token is invalid, clear it
-        localStorage.removeItem('bluewolf_token');
-        setToken(null);
-        setIsAuthenticated(false);
-      }
+      const data = await authAPI.verify();
+      setIsAuthenticated(true);
+      setToken(tokenToVerify);
     } catch (error) {
       console.error('Token verification failed:', error);
       localStorage.removeItem('bluewolf_token');
@@ -48,15 +35,7 @@ const useAuth = () => {
 
   const login = async (credentials) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials)
-      });
-
-      const data = await response.json();
+      const data = await authAPI.login(credentials);
 
       if (data.success) {
         setToken(data.token);
@@ -68,19 +47,14 @@ const useAuth = () => {
       }
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, message: 'Network error' };
+      return { success: false, message: error.message || 'Network error' };
     }
   };
 
   const logout = async () => {
     try {
       if (token) {
-        await fetch(`${API_BASE_URL}/api/auth/logout`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        await authAPI.logout();
       }
     } catch (error) {
       console.error('Logout error:', error);
