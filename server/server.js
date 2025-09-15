@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const fs = require('fs').promises;
 const proposalRoutes = require('./routes/proposalRoutes');
 const authRoutes = require('./routes/authRoutes');
+const invoiceRoutes = require('./routes/invoiceRoutes');
 
 const app = express();
 const PORT = 3001;
@@ -37,6 +38,7 @@ const transporter = nodemailer.createTransport({
 // Use routes
 app.use(authRoutes);
 app.use(proposalRoutes);
+app.use(invoiceRoutes);
 
 // Routes
 app.post('/api/send-invoice', upload.single('pdf'), async (req, res) => {
