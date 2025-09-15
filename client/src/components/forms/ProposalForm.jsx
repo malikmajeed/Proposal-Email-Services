@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGenerateProposal } from '../../hooks/useProposal';
 import { ArrowLeft, Plus, Trash2, Download, Loader } from 'lucide-react';
+import LoadingModal from '../LoadingModal';
 
 const ProposalForm = ({ onBack }) => {
   const [formData, setFormData] = useState({
@@ -64,6 +65,12 @@ const ProposalForm = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
+      <LoadingModal open={generateProposal.isPending} message={
+        <span>
+          <span className="block text-blue-600 font-bold text-lg mb-2 animate-pulse">Generating Proposal PDF...</span>
+          <span className="block text-gray-500 text-sm">This may take a few seconds. Please wait!</span>
+        </span>
+      } />
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center mb-6">

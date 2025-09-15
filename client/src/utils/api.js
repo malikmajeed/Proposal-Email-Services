@@ -44,22 +44,28 @@ export const apiRequest = async (endpoint, options = {}) => {
   }
 };
 
-// Specific API methods
+// Authentication API
 export const authAPI = {
-  login: (credentials) => 
+  login: (credentials) =>
     apiRequest('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify(credentials)
     }),
-    
-  logout: () => 
+
+  logout: (token) =>
     apiRequest('/api/auth/logout', {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
     }),
-    
-  verify: () => 
+
+  verify: (token) =>
     apiRequest('/api/auth/verify', {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      }
     })
 };
 

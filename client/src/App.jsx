@@ -4,6 +4,8 @@ import HomePage from './components/HomePage';
 import ProposalForm from './components/forms/ProposalForm';
 import Login from './components/Login';
 import useAuth from './hooks/useAuth';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +52,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-gray-50">
         {renderView()}
+        <ToastContainer />
       </div>
     </QueryClientProvider>
   );
