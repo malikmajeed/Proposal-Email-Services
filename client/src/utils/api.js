@@ -1,5 +1,6 @@
 // API Configuration and Interceptor
-const API_BASE_URL = 'https://blue-wolf-proposal-gen-backend.vercel.app';
+// const API_BASE_URL = 'https://blue-wolf-proposal-gen-backend.vercel.app';
+const API_BASE_URL = 'http://localhost:3001';
 
 // Default headers
 const getDefaultHeaders = () => {
@@ -77,9 +78,18 @@ export const proposalAPI = {
     })
 };
 
+export const invoiceAPI = {
+  generate: (invoiceData) =>
+    apiRequest('/api/generate-invoice', {
+      method: 'POST',
+      body: JSON.stringify(invoiceData)
+    })
+};
+
 export default {
   API_BASE_URL,
   apiRequest,
   authAPI,
-  proposalAPI
+  proposalAPI,
+  invoiceAPI
 };

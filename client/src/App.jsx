@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './components/HomePage';
 import ProposalForm from './components/forms/ProposalForm';
+import InvoiceForm from './components/forms/InvoiceForm';
 import Login from './components/Login';
 import useAuth from './hooks/useAuth';
 import { ToastContainer } from 'react-toastify';
@@ -24,6 +25,8 @@ function App() {
     switch (currentView) {
       case 'create-proposal':
         return <ProposalForm onBack={() => setCurrentView('home')} />;
+      case 'create-invoice':
+        return <InvoiceForm onBack={() => setCurrentView('home')} />;
       case 'send-proposal':
         return <div className="p-8 text-center">Send Proposal - Coming Soon</div>;
       case 'send-invoice':
