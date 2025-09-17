@@ -86,12 +86,16 @@ const InvoiceForm = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
-      <LoadingModal open={generateInvoice.isPending} message={
-        <span>
-          <span className="block text-blue-600 font-bold text-lg mb-2 animate-pulse">Generating Invoice PDF...</span>
-          <span className="block text-gray-500 text-sm">This may take a few seconds. Please wait!</span>
-        </span>
-      } />
+      <LoadingModal 
+        open={generateInvoice.isPending} 
+        type="loading"
+        message={
+          <span>
+            <span className="block text-blue-600 font-bold text-lg mb-2 animate-pulse">Generating Invoice PDF...</span>
+            <span className="block text-gray-500 text-sm">This may take a few seconds. Please wait!</span>
+          </span>
+        } 
+      />
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center mb-6">
