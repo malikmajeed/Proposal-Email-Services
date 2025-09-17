@@ -20,8 +20,8 @@ class InvoicePDFService {
       pdfDoc = await PDFDocument.create();
       page = pdfDoc.addPage([595, 842]); // A4 size
     }
-    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica); // Calibri not available in pdf-lib, using Helvetica as closest alternative
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold); // Calibri Bold not available in pdf-lib, using HelveticaBold as closest alternative
     const black = rgb(0, 0, 0);
     const gray = rgb(0.5, 0.5, 0.5);
     const borderGray = rgb(226/255, 226/255, 226/255);
@@ -95,22 +95,14 @@ class InvoicePDFService {
     // Align both label and value to the right, label just left of value
     page.drawText(subtotalLabel, { x: colXs[5] - 10 - subtotalValueWidth - 12 - subtotalLabelWidth, y: subtotalY, size: 12, font, color: black });
     page.drawText(subtotalValue, { x: colXs[5] - 10 - subtotalValueWidth, y: subtotalY, size: 12, font, color: black });
-    // Tax Rate (right, cost col, next row)
-    // const taxY = subtotalY - 18;
-    // const taxLabel = 'Tax Rate:';
-    // const taxValue = '0%';
-    // const taxLabelWidth = font.widthOfTextAtSize(taxLabel, 12);
-    // const taxValueWidth = font.widthOfTextAtSize(taxValue, 12);
-    // // page.drawText(taxLabel, { x: colXs[5] - 10 - taxValueWidth - 12 - taxLabelWidth, y: taxY, size: 12, font, color: black });
-    // // page.drawText(taxValue, { x: colXs[5] - 10 - taxValueWidth, y: taxY, size: 12, font, color: black });
-
+ 
     // No borders for subtotal/tax rows
 
     // Payment terms (center, bold, 11px)
     page.drawText(`${data.paymentTerms || ''}`, { x: 305, y: 67, size: 11, font: boldFont, color: black });
 
     // Invoice Time Frame (12px bold) - placeholder position, user will set x,y later
-    page.drawText(`${data.invoiceTimeFrame || ''}`, { x: 357, y: 243, size: 11, font: boldFont, color: black });
+    page.drawText(`${data.invoiceTimeFrame || ''}`, { x: 357, y: 243, size: 11, font:boldFont, color: black });
 
     return await pdfDoc.save();
   }

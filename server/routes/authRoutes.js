@@ -4,12 +4,12 @@ const AuthController = require('../controllers/AuthController');
 const { authenticateUser, requireAuth } = require('../middleware/auth');
 
 // Login endpoint
-router.post('/api/auth/login', authenticateUser, AuthController.login);
+router.post('/auth/login', authenticateUser, AuthController.login);
 
 // Logout endpoint
-router.post('/api/auth/logout', AuthController.logout);
+router.post('/auth/logout', AuthController.logout);
 
 // Verify token endpoint
-router.get('/api/auth/verify', requireAuth, AuthController.verifyToken);
+router.get('/auth/verify', requireAuth, AuthController.verifyToken);
 
 module.exports = router;

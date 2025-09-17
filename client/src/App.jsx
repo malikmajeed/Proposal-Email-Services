@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import HomePage from './components/HomePage';
 import ProposalForm from './components/forms/ProposalForm';
 import InvoiceForm from './components/forms/InvoiceForm';
+import SendInvoiceForm from './components/forms/SendInvoiceForm';
 import Login from './components/Login';
 import useAuth from './hooks/useAuth';
 import { ToastContainer } from 'react-toastify';
@@ -30,7 +31,7 @@ function App() {
       case 'send-proposal':
         return <div className="p-8 text-center">Send Proposal - Coming Soon</div>;
       case 'send-invoice':
-        return <div className="p-8 text-center">Send Invoice - Coming Soon</div>;
+        return <SendInvoiceForm onBack={() => setCurrentView('home')} />;
       default:
         return <HomePage onNavigate={setCurrentView} onLogout={logout} />;
     }

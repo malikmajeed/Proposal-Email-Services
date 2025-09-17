@@ -86,10 +86,35 @@ export const invoiceAPI = {
     })
 };
 
+export const emailAPI = {
+  sendInvoice: async (emailData) => {
+    // Check if it's FormData (file upload) or regular object
+    if (emailData instanceof FormData) {
+      const response = await fetch(`${API_BASE_URL}/api/send-invoice-email`, {
+        method: 'POST',
+        body: emailData,
+        credentials: 'include'
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      return await response.json();
+    } else {
+      return apiRequest('/api/send-invoice-email', {
+        method: 'POST',
+        body: JSON.stringify(emailData)
+      });
+    }
+  }
+};
+
 export default {
   API_BASE_URL,
   apiRequest,
   authAPI,
   proposalAPI,
-  invoiceAPI
+  invoiceAPI,
+  emailAPI
 };

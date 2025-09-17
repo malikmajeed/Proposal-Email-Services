@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - Security Guard Services</title>
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect"/>
+    <link as="style" href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" onload="this.rel='stylesheet'" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary-color: #1173d4;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            min-height: 600px;
+            color: #1f2937;
+        }
+        
+        .design-root {
+            position: relative;
+            display: block;
+            width: 100%;
+            background-color: white;
+            overflow: hidden;
+        }
+        
+        .header-section {
+            padding: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            .header-section {
+                padding: 40px 48px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .header-section {
+                padding: 48px 64px;
+            }
+        }
+        
+        .header {
+            text-align: center;
+            padding-bottom: 32px;
+        }
+        
+        @media (min-width: 768px) {
+            .header {
+                padding-bottom: 40px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .header {
+                padding-bottom: 48px;
+            }
+        }
+        
+        .header-content {
+            text-align: center;
+        }
+        
+        .company-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3b82f6;
+            text-align: center;
+            width: 100%;
+            margin: 0 0 16px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .company-title {
+                font-size: 28px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .company-title {
+                font-size: 32px;
+            }
+        }
+        
+        .company-subtitle {
+            color: #6b7280;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .company-subtitle {
+                font-size: 18px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .company-subtitle {
+                font-size: 20px;
+            }
+        }
+        
+        .invoice-card {
+            background: linear-gradient(135deg, #f9fafb 0%, rgba(239, 246, 255, 0.5) 100%);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .invoice-card {
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .invoice-card {
+                padding: 48px;
+                border-radius: 24px;
+                box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+        
+        .card-decoration-1 {
+            position: absolute;
+            top: -32px;
+            right: -32px;
+            width: 120px;
+            height: 120px;
+            background-color: rgba(219, 234, 254, 0.5);
+            border-radius: 50%;
+        }
+        
+        .card-decoration-2 {
+            position: absolute;
+            bottom: -48px;
+            left: -48px;
+            width: 180px;
+            height: 180px;
+            background-color: rgba(219, 234, 254, 0.5);
+            border-radius: 50%;
+        }
+        
+        .invoice-amount-section {
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .amount-label {
+            font-size: 14px;
+            color: #3b82f6;
+            margin-bottom: 8px;
+        }
+        
+        .amount-value {
+            font-size: 30px;
+            font-weight: 800;
+            color: #111827;
+            letter-spacing: -0.025em;
+        }
+        
+        @media (min-width: 768px) {
+            .amount-value {
+                font-size: 36px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .amount-value {
+                font-size: 42px;
+            }
+        }
+        
+        .invoice-details {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .detail-row {
+            margin-bottom: 16px;
+        }
+        
+        .detail-row {
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+        }
+        
+        .detail-row-content {
+            display: table;
+            width: 100%;
+        }
+        
+        .detail-label {
+            display: table-cell;
+            width: 50%;
+            vertical-align: middle;
+        }
+        
+        .detail-value {
+            display: table-cell;
+            width: 50%;
+            text-align: right;
+            vertical-align: middle;
+        }
+        
+        @media (min-width: 768px) {
+            .detail-row {
+                padding: 20px;
+                border-radius: 10px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .detail-row {
+                padding: 24px;
+                border-radius: 12px;
+            }
+        }
+        
+        .detail-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .detail-label {
+                font-size: 15px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .detail-label {
+                font-size: 16px;
+            }
+        }
+        
+        .detail-value {
+            font-weight: 500;
+            color: #1f2937;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .detail-value {
+                font-size: 15px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .detail-value {
+                font-size: 16px;
+            }
+        }
+        
+        .detail-value.mono {
+            font-family: 'Courier New', monospace;
+        }
+        
+        .detail-value.blue {
+            color: #2563eb;
+        }
+        
+        .download-section {
+            padding: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            .download-section {
+                padding: 40px 48px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .download-section {
+                padding: 48px 64px;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+        
+        .download-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            border-radius: 12px;
+            height: 56px;
+            line-height: 56px;
+            background: #3b82f6;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border: none;
+        }
+        
+        @media (min-width: 768px) {
+            .download-button {
+                height: 64px;
+                font-size: 20px;
+                border-radius: 14px;
+                box-shadow: 0 12px 30px rgba(59, 130, 246, 0.35);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .download-button {
+                height: 72px;
+                font-size: 22px;
+                border-radius: 16px;
+                box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+            }
+        }
+        
+        .download-button:hover {
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .download-button:active {
+            transform: scale(1.02);
+        }
+        
+        
+        .footer {
+            background-color: #f9fafb;
+            padding: 24px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        @media (min-width: 768px) {
+            .footer {
+                padding: 32px 48px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .footer {
+                padding: 40px 64px;
+            }
+        }
+        
+        .footer p {
+            margin: 6px 0;
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+        
+        .footer p strong {
+            color: #1f2937;
+            font-weight: 600;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 640px) {
+            .header-section {
+                padding: 16px;
+            }
+            
+            .company-title {
+                font-size: 20px;
+            }
+            
+            .company-subtitle {
+                font-size: 14px;
+            }
+            
+            .invoice-card {
+                padding: 24px;
+            }
+            
+            .amount-value {
+                font-size: 24px;
+            }
+            
+            .download-section {
+                padding: 16px;
+            }
+            
+            .download-button {
+                height: 48px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="design-root">
+        <div class="header-section">
+            <header class="header">
+                <div class="header-content">
+                    <h1 class="company-title">BlueWolf International Security</h1>
+                    <p class="company-subtitle">Security Guard Services</p>
+                </div>
+            </header>
+            
+            <div class="invoice-card">
+                <!-- <div class="card-decoration-1"></div>
+                <div class="card-decoration-2"></div> -->
+                
+                <div class="invoice-amount-section">
+                    <p class="amount-label">Invoice Total</p>
+                    <h2 class="amount-value">{{Amount}}</h2>
+                </div>
+                
+                <div class="invoice-details">
+                    <div class="detail-row">
+                        <div class="detail-row-content">
+                            <p class="detail-label">Billed to</p>
+                            <p class="detail-value">{{client-name}}</p>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-content">
+                            <p class="detail-label">Invoice #</p>
+                            <p class="detail-value mono">{{InvoiceNumber}}</p>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-row-content">
+                            <p class="detail-label">Due Date</p>
+                            <p class="detail-value blue">{{DueDate}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="download-section">
+            <a href="{{InvoiceLink}}" class="download-button">Download Invoice PDF</a>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Contact:</strong> 310-920-7732 | Info@bwisecurity.com | www.bwisecurity.com</p>
+            <p><strong>Payment Options:</strong></p>
+            <p>Chase Bank: 642202108 | Mail: 2029 Allbrook St., Lomita, CA 90717</p>
+            <p>Zelle: Info@bwisecurity.com (American Elite Guard INC.)</p>
+        </div>
+    </div>
+</body>
+</html>
