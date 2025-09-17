@@ -6,6 +6,8 @@ const fs = require('fs').promises;
 const proposalRoutes = require('./routes/proposalRoutes');
 const authRoutes = require('./routes/authRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
+const emailRoutes = require('./routes/emailRoutes');
+require('dotenv').config();
 
 const app = express();
 const PORT = 3001;
@@ -30,15 +32,16 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER || 'your-email@gmail.com',
-    pass: process.env.EMAIL_PASS || 'your-app-password'
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
 // Use routes
-app.use(authRoutes);
-app.use(proposalRoutes);
-app.use(invoiceRoutes);
+app.use('/api', authRoutes);
+app.use('/api', proposalRoutes);
+app.use('/api', invoiceRoutes);
+app.use('/api', emailRoutes);
 
 // Routes
 app.post('/api/send-invoice', upload.single('pdf'), async (req, res) => {
@@ -50,55 +53,9 @@ app.post('/api/send-invoice', upload.single('pdf'), async (req, res) => {
     }
     
     const mailOptions = {
-      from: process.env.EMAIL_USER || 'your-email@gmail.com',
+      from: '"BlueWolf Security" <info@bwisecurity.com>',
       to: clientEmail,
-      subject: `Invoice #${invoiceNumber} - $${amount}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
-            <h1 style="color: white; margin: 0; font-size: 28px;">Invoice</h1>
-          </div>
-          
-          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-            <p style="font-size: 16px; color: #333; margin-bottom: 20px;">Dear ${clientName},</p>
-            
-            <p style="font-size: 14px; color: #666; line-height: 1.6;">
-              I hope this email finds you well. Please find attached invoice #${invoiceNumber} for the amount of $${amount}.
-            </p>
-            
-            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0;">
-              <h3 style="color: #333; margin: 0 0 15px 0;">Invoice Details:</h3>
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                  <td style="padding: 8px 0; color: #666; font-weight: bold;">Invoice Number:</td>
-                  <td style="padding: 8px 0; color: #333;">#${invoiceNumber}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 8px 0; color: #666; font-weight: bold;">Amount:</td>
-                  <td style="padding: 8px 0; color: #333; font-size: 18px; font-weight: bold;">$${amount}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 8px 0; color: #666; font-weight: bold;">Due Date:</td>
-                  <td style="padding: 8px 0; color: #e74c3c; font-weight: bold;">${new Date(dueDate).toLocaleDateString()}</td>
-                </tr>
-              </table>
-            </div>
-            
-            <p style="font-size: 14px; color: #666; line-height: 1.6;">
-              Payment is due by ${new Date(dueDate).toLocaleDateString()}. Please don't hesitate to contact us if you have any questions regarding this invoice.
-            </p>
-            
-            <p style="font-size: 14px; color: #666; line-height: 1.6; margin-top: 25px;">
-              Thank you for your business!
-            </p>
-            
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-              <p style="color: #333; font-weight: bold; margin: 0;">Best regards,</p>
-              <p style="color: #666; margin: 5px 0 0 0;">Your Team</p>
-            </div>
-          </div>
-        </div>
-      `,
+      subject: `Invoice #${invoiceNumber} - BlueWolf Int'l Security`,
       attachments: [
         {
           filename: `invoice-${invoiceNumber}.pdf`,
